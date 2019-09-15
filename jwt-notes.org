@@ -1,0 +1,79 @@
+#+TITLE: JHipster JWTs
+#+OPTIONS: toc:nil
+
+* Basic Flow
+When logging into an account, JHipster hits the =/api/authenticate= with the following request:
+#+begin_src restclient
+  POST /api/authenticate
+  Content-Type: application/json
+  {
+  "password": "admin",
+  "rememberMe": false,
+  "username": "admin"
+  }
+
+#+end_src
+
+If the user is successfully authenticated, a JSON response comes back in the following form:
+#+begin_src json
+  {
+      "id_token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOiJST0xFX0FETUlOLFJPTEVfVVNFUiIsImV4cCI6MTU2ODY0NjAxN30.jAxnBe-DPe7KK9PZXd1JtEH0ihgSFgGM4pdWNsbhL426-wWqfcDnb8ymi0jBqrc7fqbfZyRObQzmKAc99ROd9g"
+  }
+#+end_src
+
+That =id_token= is a jwt. It's a hashed/signed collection of information about the current user. Specifically this JWT contains the following:
+
+#+begin_src json
+{
+  "alg": "HS512"
+},
+{
+  "sub": "admin",
+  "auth": "ROLE_ADMIN,ROLE_USER",
+  "exp": 1568646017
+}
+#+end_src
+
+- The =sub= key will contain a value identifying the subject of the token. In this case, it's the user /admin/.
+- The =auth= key (I think) is something custom that JHipster creates for us to give basic role management information.
+- The =exp= key just tells us when this particular token will expire (in unix timestamp format)
+
+* Frontend Info
+  For people working on the initial login UI, the flow probably shouldn't change too much. The existing endpoint should be hit in the same way as it currently is. If we can just take out the logic of JHipster's existing pages, it should be smooth sailing. If not, a function hitting our API shouldn't be too hard to create. It would probably looks something like:
+  #+begin_src js
+    const authenticate = async (username, password, rememberMe) => {
+      try {
+        const response = await fetch("/api/authenticat", {
+          body: JSON.stringify({ username, password, rememberMe }),
+          method: 'POST'
+        })
+        const jwt = await response.json().id_token
+        sessionStorage.setItem('jhi-authenticationToken', jwt)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  #+end_src
+  
+  You might notice that this function doesn't actually return anything - instead it sets an item in sessionStorage. It looks like JHipster by default stores a user's JWT in [[https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage][sessionStorage]] (which is basically just a global hashmap for a browsing session). I actually really like this way of doing things, so I think we should stay the course. This means that all future API requests from frontend to backend would have to set the authorization header to be the value of /jhi-authenticationToken/ from session storage. As an example:
+
+  #+begin_src js
+    const user_info = async () => {
+      try {
+        const response = await fetch("/api/account", {
+          headers: {
+            Authorization: 'Bearer ' + sessionStorage.getItem('jhi-authenticationToken'),
+            Accept: 'application/json'
+          },
+          method: 'GET'
+        })
+
+        const results = await response.json()
+        return results
+      } catch (err) {
+        console.error(err)
+        return err
+      }
+    }
+
+  #+end_src

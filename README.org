@@ -1,0 +1,6 @@
+#+TITLE: RecCenterManagement Notes
+
+* About
+  I don't know about anyone else, but after working so long with really good markdown editors, or doing a whole bunch of stuff in org-mode it really hurts to have to write out notes and documents for programming-related stuff in something like Google Drive. I miss my syntax highlighting and all of my keyboard shortcuts...
+
+  I know it's a bit of an anti-pattern to have documentation a bit removed from the project, but I think that this senior design class probably requires a lot more documentation than your typical OSS project. So this repo might be removed if people don't like the idea, or want to merge it into the main repo. But for now, I'll upload some notes I've taken regarding the project and some of the tech that we use
