@@ -1,0 +1,66 @@
+entity ProfilePicture {
+    profilePicture ImageBlob required,
+}
+
+entity UserConfig {
+    suspended Boolean required
+}
+
+entity CheckIn {
+    time Instant required
+}
+
+enum MembershipType {
+    GUEST,
+    MEMBER
+}
+
+entity Membership {
+    startDate Instant required,
+    endDate Instant required,
+    membershipType MembershipType required
+}
+
+entity Room {
+    name String required,
+    location String
+}
+
+entity Equipment {
+    name String required
+}
+
+entity EquipmentGroup {
+    name String required
+}
+
+entity RoomReservation {
+    startTime Instant required,
+    endTime Instant required
+}
+
+entity EquipmentReservation {
+    startTime Instant required,
+    endTime Instant required
+}
+
+relationship OneToOne {
+    UserConfig{user} to User
+    ProfilePicture{user} to User
+}
+
+relationship OneToMany {
+    EquipmentGroup{equipment} to Equipment
+    Membership{checkIns} to CheckIn
+    Membership{equipmentReservations} to EquipmentReservation
+    Membership{roomReservations} to RoomReservation
+}
+
+relationship ManyToOne {
+    Membership{user} to User
+    RoomReservation{room} to Room
+}
+
+relationship ManyToMany {
+    EquipmentReservation{equipment} to Equipment
+}
