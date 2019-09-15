@@ -1,15 +1,20 @@
 #+TITLE: JHipster JWTs
 #+OPTIONS: toc:nil
 
-* Basic Flow
+* JWT Basics
+  Although I do really like talking about JWTs, because I think they're really cool, either of these two sites probably give a better explanation than I could
+  - [[https://hackernoon.com/why-do-we-need-the-json-web-token-jwt-in-the-modern-web-k29l3sfd][Why do we Need the JSON Web Token (JWT) in the Modern Web Era?]]
+  - [[https://jwt.io/introduction/][Introduction to JSON Web Tokens]]
+    
+* Login Flow
 When logging into an account, JHipster hits the =/api/authenticate= with the following request:
 #+begin_src restclient
   POST /api/authenticate
   Content-Type: application/json
   {
-  "password": "admin",
-  "rememberMe": false,
-  "username": "admin"
+    "password": "admin",
+    "rememberMe": false,
+    "username": "admin"
   }
 
 #+end_src
