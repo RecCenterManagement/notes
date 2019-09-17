@@ -2,7 +2,7 @@ entity ProfilePicture {
     profilePicture ImageBlob required,
 }
 
-entity UserConfig {
+entity ExtendedUser {
     suspended Boolean required
 }
 
