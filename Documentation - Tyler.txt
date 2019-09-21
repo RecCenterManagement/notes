@@ -1,0 +1,20 @@
+﻿Research and Documentation
+* https://mdbootstrap.com/docs/react/navigation/footer/#!
+* https://ant.design/docs/react/introduce
+* http://reactstrap.github.io/components/layout/
+* https://getbootstrap.com/docs/4.3/utilities/borders/
+
+
+
+
+Footer Page (must haves for it to work!)
+Steps to make sure these are installed otherwise the footer will not work and code will not compile...
+1. Install mdbreact >> npm install --save mdbreact
+2. Import modules
+***put this import in src/webapp/app/modules/layout/footer/footer.tsx***
+* import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+***put this import in src/webapp/app/modules/layout/footer/footer.tsx and make sure to change the ‘no-submodule-imports’ to false in the tslint.json file ***
+* import 'bootstrap-css-only/css/bootstrap.min.css';
+* import 'mdbreact/dist/css/mdb.css';
