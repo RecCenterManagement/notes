@@ -1,0 +1,4 @@
+1)Add an ErrorBoundaryRoute in route.tsx
+2) Create a new module in the module directory along with the file necessary
+3) add an export default at the end of the files
+3) add an import of the new module in route.tsx
