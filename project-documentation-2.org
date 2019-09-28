@@ -1,0 +1,81 @@
+* Project Execution and Planning
+** Team Information
+   The RecCenterManagement team is loosely divided into different roles based on each
+   student's specialties. Although some members might go back and forth across several
+   roles throughout the project lifetime, the general division is as follows:
+
+   - Front-End
+     - Doris
+     - Taylor
+     - Tyler
+   - Back-End
+     - Eric
+     - Noah
+   - Misc
+     - Aaron
+     - Eapen
+   
+   This is not to say that Tyler, for example, will never work on any backend tasks,
+   but rather if there is a sprint with lots of frontend tasks, he will typically 
+   work on those. The /Misc/ category is just what it sounds like - these members
+   work on tasks as needed, depending on the focus of each sprint. Since we are placing
+   a heavy emphasis on user experience, it is most likely that these members will also
+   be working mostly on frontend tasks.
+   
+** Tools and Technology
+   This team has several different project management and communication tools at their
+   disposal allowing for the free flow of information, and collaboration while problem
+   solving.
+   
+*** GitHub
+    Obviously our team collaborates on code via GitHub, but we also use this service for
+    our [[https://github.com/orgs/RecCenterManagement/projects/1][project management]]. The typical sprint flow first involves creating and assigning
+    issues for each team member. Then each person will create a branch referencing that 
+    issue number (eg =amgoodfellow-9=). Once they've finished working on their feature,
+    they create a pull request to merge their feature branch into =develop=. Before the
+    sprint presentation, =develop= is tested by Eapen and merged into =master=.
+    
+    Since we've signed up for a GitHub /Organization/ account, we can have multiple repos
+    'under one roof'. With the goal of having things in one place as much as possible then,
+    we also have this documentation repository. It's actually pretty convenient, considering
+    markdown is fairly easy to write, and code syntax highlighting is a wonderful feature.
+*** Slack
+    Slack is an Instant Messaging client created for team collaboration. On here, our team
+    members can clarify objectives, ask questions to other members, and we can plan impromptu 
+    in-person meetings.
+*** Google Drive
+    Google Drive is used almost exclusively for preparing Slides. Occasionaly, we've also used
+    it to allow collaborative document editing, although this is mainly for emails or project
+    goals, since most documentation work like this is assigned to individuals who have extra
+    time during a sprint.
+    
+** Project Plan
+   Our project has the [[./requirements][following]] requirements laid out.
+
+   Since the goal of this project is to follow true AGILE methods, our sprints aren't strictly
+   planned out from the start (since this would be pretty waterfall-y). Instead, we have a 
+   general goal that we'd /like/ to see each sprint, but we adjust after every presentation.
+
+   Here is what we initially laid out as a general sprint overview:
+
+   1. User Account Creation, Management, Authorization, and Authentication
+   2. Account UI / Account Endpoint Implementation / Database Design
+   3. Facility Backend Logic / Facility Rental UI / Backlog
+   4. Mid-Project Review / Facility Endpoints / Facility Management UI
+   5. Reservations Backend / Inventory Backend / Inventory UI
+   6. TBD
+   7. Testing / Documentation / BugFixes
+
+** Best standards and Practices
+   Standards and Best Practices are still being laid out.
+
+   - No one will push directly to =master= or =develop= - instead, everyone must submit a 
+     PR for their feature branch to be merged in. Aaron will typically be the one reviewing
+     PR's (except for his own).
+   - We aim to have all feature branches merged into =develop= for testing at least a day before
+     the sprint presentation is due. This should give us a reasonable amount of time to test and 
+     merge before a sprint demo. The obvious exception will be sprints where QA testing is 
+     a large part (like sprint 7)
+   - We'd prefer to keep JHipster happy and not break away from the JDL, i18n, Router, and Entity
+     creation utilities that it gives us. To this end, it should be a priority for developers to
+     try and keep things as close to what the JHipster devs want us to do as feasible for this project.
