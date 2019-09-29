@@ -1,62 +1,62 @@
 entity ProfilePicture {
-	profilePicture ImageBlob required,
+    profilePicture ImageBlob required,
 }
 
 entity ExtendedUser {
-	badActor Boolean required
+    badActor Boolean required
 }
 
 entity CheckIn {
-	time Instant required
+    time Instant required
 }
 
 enum MembershipType {
-	GUEST,
+    GUEST,
     MEMBER
 }
 
 entity Membership {
-	startDate Instant required,
+    startDate Instant required,
     endDate Instant required,
     membershipType MembershipType required
 }
 
 entity Facility {
-	name String required unique
+    name String required unique
 }
 
 entity Equipment {
-	name String required
+    name String required
 }
 
 entity EquipmentGroup {
-	name String required
+    name String required
 }
 
 entity Reservation {
-	event String required
+    event String required
     estimatedParticipants Integer required
     startTime ZonedDateTime required
     endTime ZonedDateTime required
 }
 
 relationship OneToOne {
-	ExtendedUser{user} to User
+    ExtendedUser{user} to User
     ProfilePicture{user} to User
 }
 
 relationship OneToMany {
-	EquipmentGroup{equipment} to Equipment
+    EquipmentGroup{equipment} to Equipment
     Membership{checkIns} to CheckIn
 }
 
 relationship ManyToOne {
-	Reservation{user} to User
-	Membership{user} to User
+    Reservation{user} to User
+    Membership{user} to User
 }
 
 relationship ManyToMany {
-	Reservation{facilities} to Facility{reservations} 
+    Reservation{facilities} to Facility{reservations} 
     Reservation{equipmentGroups} to EquipmentGroup{reservations}
 }
 
