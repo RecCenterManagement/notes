@@ -15,6 +15,10 @@ enum MembershipType {
     MEMBER
 }
 
+entity EquipmentReservation {
+	count Integer required,
+    
+}
 entity Membership {
     startDate Instant required,
     endDate Instant required,
@@ -26,10 +30,6 @@ entity Facility {
 }
 
 entity Equipment {
-    name String required
-}
-
-entity EquipmentGroup {
     name String required
 }
 
@@ -46,22 +46,23 @@ relationship OneToOne {
 }
 
 relationship OneToMany {
-    EquipmentGroup{equipment} to Equipment
-    Membership{checkIns} to CheckIn
+        Membership{checkIns} to CheckIn
+        Reservation{equipmentReservations} to EquipmentReservation
 }
 
 relationship ManyToOne {
     Reservation{user} to User
     Membership{user} to User
+    EquipmentReservation{equipment} to Equipment
 }
 
 relationship ManyToMany {
     Reservation{facilities} to Facility{reservations} 
-    Reservation{equipmentGroups} to EquipmentGroup{reservations}
 }
 
 service Facility with serviceClass
 service Reservation with serviceClass
+service EquipmentReservation with serviceClass
 
 filter Reservation
 
