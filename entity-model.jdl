@@ -1,63 +1,70 @@
 entity ProfilePicture {
-    profilePicture ImageBlob required,
+	profilePicture ImageBlob required,
 }
 
 entity ExtendedUser {
-    badActor Boolean required
+	badActor Boolean required
 }
 
 entity CheckIn {
-    time Instant required
+	time Instant required
 }
 
 enum MembershipType {
-    GUEST,
-    MEMBER
+	GUEST,
+	MEMBER
 }
 
 entity EquipmentReservation {
 	count Integer required,
-    
 }
+
 entity Membership {
-    startDate Instant required,
-    endDate Instant required,
-    membershipType MembershipType required
+	startDate Instant required,
+	endDate Instant required,
+	membershipType MembershipType required
 }
 
 entity Facility {
-    name String required unique
+	name String required unique,
+	footage Integer required,
+	capacity Integer required,
+	avSupport String max(180),
+	foodAllowed Boolean required,
+	colorCode String,
+	description String
 }
 
 entity Equipment {
-    name String required
+	name String required,
+	inventory Integer required min(0)
 }
 
 entity Reservation {
-    event String required
-    estimatedParticipants Integer required
-    startTime ZonedDateTime required
-    endTime ZonedDateTime required
+	event String required
+	estimatedParticipants Integer required
+	startTime ZonedDateTime required
+	endTime ZonedDateTime required
 }
 
 relationship OneToOne {
-    ExtendedUser{user} to User
-    ProfilePicture{user} to User
+	ExtendedUser{user} to User
+	ProfilePicture{user} to User
 }
 
 relationship OneToMany {
-        Membership{checkIns} to CheckIn
-        Reservation{equipmentReservations} to EquipmentReservation
+	Membership{checkIns} to CheckIn
+	Reservation{equipmentReservations} to EquipmentReservation
 }
 
 relationship ManyToOne {
-    Reservation{user} to User
-    Membership{user} to User
-    EquipmentReservation{equipment} to Equipment
+	Reservation{user} to User
+	Membership{user} to User
+	EquipmentReservation{equipment} to Equipment
 }
 
 relationship ManyToMany {
-    Reservation{facilities} to Facility{reservations} 
+	Reservation{facilities} to Facility{reservations} 
 }
 
 service Facility with serviceClass
