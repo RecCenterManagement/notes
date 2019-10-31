@@ -40,6 +40,14 @@ entity Equipment {
 	inventory Integer required min(0)
 }
 
+entity EquipmentBundle {
+	name String required unique
+}
+
+entity EquipmentBundleClaim {
+	count Integer required
+}
+
 entity Reservation {
 	event String required
 	estimatedParticipants Integer required
@@ -55,21 +63,25 @@ relationship OneToOne {
 relationship OneToMany {
 	Membership{checkIns} to CheckIn
 	Reservation{equipmentReservations} to EquipmentReservation
+	EquipmentBundle{claims} to EquipmentBundleClaim
 }
 
 relationship ManyToOne {
 	Reservation{user} to User
 	Membership{user} to User
 	EquipmentReservation{equipment} to Equipment
+	EquipmentBundleClaim{equipment} to Equipment
 }
 
 relationship ManyToMany {
 	Reservation{facilities} to Facility{reservations} 
+	Facility{equipmentBundles} to EquipmentBundle{facilities}
 }
 
 service Facility with serviceClass
 service Reservation with serviceClass
 service EquipmentReservation with serviceClass
+service EquipmentBundle with serviceClass
 
 filter Reservation
 
