@@ -1,0 +1,94 @@
+* 8. System Architecture and System Design 
+** Subsystems / Component / Design Pattern Identification
+*** Backend: 
+    We have a Java SpringBoot backend that uses a RESTful design pattern. Following this
+    design patterns means a couple things:
+      1) Our API is stateless
+         - When a client hits an endpoint, nothing is known about that client unless it is
+           explicitly sent with the request
+         - We handle /user authorization/ via JWTs - JSON Web Tokens. These are base64 URL
+           encoded key value pairs continaing user information, all signed with a symetric
+           hashing algorithm (HMAC512 in our case)
+      2) Our API follows a standard RESTful naming convention
+         - Every endpoint a client can hit is a series of verbs laid out with increasing 
+           specificity. The actions being taken by calling a specific endpoint are specified
+           via the HTTP request type (PUT, POST, GET, etc)
+   
+   We also use Spring Data which provides a convenient Object Relational Mapping system for 
+   interacting with our database in Java. Spring Data allows POJOs (Plain Old Java Objects)
+   to be automatically serialized and deserialized when interacting with a database. What's 
+   more, Spring Data is a high level abstraction, so although we currently use Postgres for
+   our database, we could switch to another with hardly any changes. More will be specified 
+   about this in the *Presistent Data Storage* section. 
+*** Frontend:
+   We have a ReactJS frontend which is all rendered client-side. This is nice, because it 
+   allows us to offload some of the work from our servers, while still giving clients a 
+   modern, responsive website.
+   The front-end makes many HTTP requests to the backend, sending and accepting JSON bodies.
+   Based on whatever JSON responses the server sends back, a unique view is rendered.
+
+   The front-end and backend are two seperate projects running on different ports. This is
+   most convenient for development, since it allows quickly iterating frontend changes without
+   having to rebuild the backend each time. Our communication with the backend is handled via
+   a proxy setting in our frontend's =package.json= (settings file). This allows us to keep
+   all API request paths relative so we aren't hard-coding the location or port of our backend
+   server. This keeps things flexible regardless of how you choose to deploy the application.
+** Deployment Diagram
+   To deploy our project in a production environment, we assume that deployment is occuring 
+   to a local cloud (since this seems to be the preference of most higher education institutions).
+
+   To do this, make sure that your server has JDK8, Postgres > 9 and Nodejs > 10. 
+
+   Clone down both projects, and change default ports as desired (see /Network Protocol/ for more
+   port-specific information).
+
+   For the backend run the command: 
+   #+BEGIN_SRC shell
+      ./gradlew
+   #+END_SRC 
+   And for the frontend run:
+   #+BEGIN_SRC shell
+      npm i && npm start
+   #+END_SRC
+
+   Diagram to come later...
+** Presistent Data Storage
+   Our project actually has a pretty neat setup. As was stated previously in this document, the
+   Java portion interacts with the database via Spring Data APIs. These are made to interact with
+   whatever database the administrator wants set up on their server. We chose to use Postgres to
+   be in-keeping with OU UTS preferences, but the project could be changed fairly easily if a 
+   different system was desired.
+
+   During development, the /database/ is actually just a file saved in the build folder. It's not
+   until you specify that you want a production-ready build that it attempts to connect to some
+   local postgres server. So for development and testing, one doesn't necessarily even need
+   any database installed locally, which is very convenient.
+** Network Protocol
+   As stated previously, our backend and frontends currently run on two different ports. The 
+   default port for the backend is =localhost:8080= and the default frontend port is 
+   =localhost:3000=. This can easily be changed for either project in the 
+   =application.properties= or =package.json= respectivley. To run over a network then, both
+   projects must be running on publicly accessible ports. A suggestion: keep the backend on
+   port 8080, and run the frontend over port 80.
+
+   The frontend and backend communicate exclusivley via RESTful HTTP requests. Multiple request
+   types are used, including but not limited to GET, POST, PUT, and DELETE. Each request for
+   an authenticated user should include an Authorization Header with a JWT Bearer Token attached.
+   This allows the backend to authorize the user, and ensure that they have the proper permissions
+   to view/modify the resource they're requesting.
+** Global Control Flow
+   I don't know what this means...
+** Hardware Requirements
+   Our hardware requirements are quite modest to simply build and run the project 
+   initially. We'd recommend the same as Oracle in that your machine should have at least
+   a 1 GHz processor newer than Intel's Pentium 2 line, and at least 1 GB of system memory.
+   Our project's backend starts up an embedded Tomcat server. Tomcat recommends at least 
+   512MB of system memory available, although everyone on our team always runs our backend 
+   with at least 1 GHz. 
+   Naturally, building and hosting are quite different tasks - yet both are much more 
+   convenient the more resources you have. Although we lack a real user-base to test with,
+   some members of our team make webapps quite similar for Oakland University. These webapps
+   typically do well on about 2 GB of system memory with two dedicated 3.5 GHz cores. The 
+   user base for these webapps is roughly the size of the student body. We'd expect our 
+   project to scale in a very similar manner.
+   
